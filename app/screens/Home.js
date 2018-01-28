@@ -1,28 +1,31 @@
 import React from 'react'
-import { StatusBar, View, Text } from 'react-native'
+import { StatusBar, View, Text, ListView } from 'react-native'
 import { Container } from '../components/Container'
 import { Clicker } from '../components/Clicker'
 import { Header } from '../components/Header'
 import { Logo } from '../components/Logo'
 import { Register } from '../components/Register'
+import { Shop } from '../components/Shop'
 import { Constants } from 'expo'
+import { checkAuth } from '../config/api'
 import PropTypes from 'prop-types'
 
 class Home extends React.Component {
-
     constructor(props) {
         super(props)
 
         this.state = {
             auth: false,
             virionBalance: 1,
-            virionPerClick: 1
+            virionPerClick: 1,
         }
     }
 
-    componentDidMount() {
-        console.log(Constants.deviceId)
+    static propTypes = {
+        navigation: PropTypes.object
+    }
 
+    checkAuth() {
         fetch('http://35.177.182.18:5000/api/user', {
             method: 'GET',
             headers: {
@@ -38,18 +41,18 @@ class Home extends React.Component {
                     auth: false
                 })
             }
-            console.log(response.status)
             return response.json()
         }).then(responseJson => {
-            console.log(responseJson)
             this.setState({
                 virionBalance: responseJson.balance
             })
-        })
+        })    
     }
 
-    static propTypes = {
-        navigation: PropTypes.object
+    componentDidMount() {
+        console.log(Constants.deviceId)
+
+        this.checkAuth()
     }
 
     handleMapsPress = () => {
@@ -67,7 +70,6 @@ class Home extends React.Component {
                 team: 'virus'
             })
         }).then(response => {
-            console.log(response)
             if (response.status === 200) {
                 this.setState({
                     auth: true
@@ -102,7 +104,7 @@ class Home extends React.Component {
         })
     }
 
-    handleVirionClick() {
+    handleVirionPress() {
         this.setState({
             virionBalance: this.state.virionBalance + this.state.virionPerClick
         })
@@ -116,6 +118,8 @@ class Home extends React.Component {
             body: JSON.stringify({
                 balance: this.state.virionBalance + this.state.virionPerClick
             })
+        }).then(response => {
+            console.log(response)
         })
     }
 
@@ -132,11 +136,17 @@ class Home extends React.Component {
             <Container>
                 <StatusBar
                     translucent={false}
-                    barStyle="light-content"b
+                    barStyle="light-content"
                 />
                 <Header onPress={this.handleMapsPress} />
                 <Logo />
-                <Clicker virionBalance={this.state.virionBalance} virionPerClick={this.state.virionPerClick} updateVirionBalance={() => {this.handleVirionClick()}}/>
+                <Clicker
+                    virionBalance={this.state.virionBalance}
+                    virionPerClick={this.state.virionPerClick}
+                    updateVirionBalance={
+                        () => { this.handleVirionPress() }
+                    }
+                />
             </Container>
         )
     }

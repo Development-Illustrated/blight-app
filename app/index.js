@@ -6,7 +6,7 @@ EStyleSheet.build({
     $primaryBlue: '#4F6D7A',
     $white: '#FFFFFF',
     $bacteria: '#DD4157',
-    $virus: '#059EBE'
+    $virus: '#059EBE',
 })
 
 export default () => <Navigator />

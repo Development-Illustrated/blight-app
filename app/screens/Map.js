@@ -46,16 +46,7 @@ export default class Map extends React.Component {
     })
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        hackPadding: 1
-      })
-    }, 500);
-  }
-
   render() {
-    console.log(this.state.location)
     return (
         <MapView
             customMapStyle={this.mapStyle}
@@ -64,6 +55,8 @@ export default class Map extends React.Component {
             initialRegion={this.location}
             showsUserLocation={true}
             showsMyLocationButton={true}
+            followsUserLocation={true}
+            onRegionChangeComplete={(region) => { console.log(region) }}
         >
         {this.state.markers.map((marker, index) => {
           return (
