@@ -1,22 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
-import { MapView, Constants, Location, Permissions } from 'expo'
+import React from 'react'
+import EStyleSheet from 'react-native-extended-stylesheet'
+import Navigator from './config/routes'
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Yay</Text>
-      </View>
-    );
-  }
-}
+EStyleSheet.build({
+    $primaryBlue: '#4F6D7A',
+    $white: '#FFFFFF',
+    $bacteria: '#DD4157',
+    $virus: '#059EBE'
+})
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default () => <Navigator />
